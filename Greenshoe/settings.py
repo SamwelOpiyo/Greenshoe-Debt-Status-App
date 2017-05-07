@@ -25,7 +25,7 @@ SECRET_KEY = 'gvvqh#=ikuz%#eadmn@exjp$d@u+!0(micky!r-&cq9^48&c61'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.example.com','.samwelopiyo.guru','127.0.0.1']
 
 
 # Application definition
@@ -134,13 +134,21 @@ AUTHENTICATION_BACKENDS = [
     
 ]
 
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQURIED=True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 3
+
 
 EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST='smtp.zoho.com'
-EMAIL_PORT=465
-EMAIL_HOST_USER='sammyopiyo@zoho.com'
-EMAIL_HOST_PASSWORD='RCPrIdrsyhkj'
+EMAIL_PORT=587
+EMAIL_HOST_USER='admin@samwelopiyo.guru'
+EMAIL_HOST_PASSWORD='tZXr8yQJQmNq'
 EMAIL_USE_TLS=True
+DEFAULT_FROM_EMAIL = 'admin@samwelopiyo.guru'
+
 
 TEMPLATES = [
     {
