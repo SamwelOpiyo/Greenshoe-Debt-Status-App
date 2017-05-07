@@ -134,6 +134,14 @@ AUTHENTICATION_BACKENDS = [
     
 ]
 
+
+EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST='smtp.zoho.com'
+EMAIL_PORT=465
+EMAIL_HOST_USER='sammyopiyo@zoho.com'
+EMAIL_HOST_PASSWORD='RCPrIdrsyhkj'
+EMAIL_USE_TLS=True
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
