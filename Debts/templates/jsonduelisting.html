@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title1 %}
+  <meta name="description" content="">
+  <title></title>
+
+
+{% endblock title1 %}
+{% block content1 %}
+<div class="container">
+
+
+<br/><br/><hr/>
+
+
+<table class="table table-bordered">
+  <tr>
+    <th><center>Id</center></th>
+    <th><center>National Id</center></th>
+    <th><center>Mobile Number</center></th>
+    <th><center>Fully Cleared</center></th>
+    <th><center>Date Cleared</center></th>
+    <th><center>Clearing Mpesa Transaction Id</center></th>
+    <th><center>Batch Numbers</center></th>
+  </tr>
+
+
+
+
+
+
+    {% for due in dues %}
+    
+
+    <tr>
+      <td><center>{{ due.0.id }}</center></td>
+      <td><center>{{ due.0.national_id }}</center></td>
+      <td><center>{{ due.0.mobile_number }}</center></td>
+      <td><center>{{ due.0.fully_cleared }}</center></td>
+      <td><center>{{ due.0.date_cleared }}</center></td>
+      <td><center>{{ due.0.clearing_mpesa_trans_id }}</center></td>
+      <td><center>{{ due.0.batch_numbers }}</center></td>
+    </tr>
+
+    {% endfor %}
+    
+    
+
+
+
+
+
+
+</table>
+
+
+
+
+
+
+
+</div>
+
+{% endblock content1 %}

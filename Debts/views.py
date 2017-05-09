@@ -67,5 +67,5 @@ def profiles(request):
     return render(request, 'jsonprofiles.html', {'profiles':extract_profiles()})
 
 def duelisting(request):
-    return HttpResponse(json.dumps(extract_duelisting()))
-    #return render(request, 'jsonduelisting.html', {'dues':extract_duelisting()})
+    #return HttpResponse(json.dumps(extract_duelisting()))
+    return render(request, 'jsonduelisting.html', {'dues':extract_duelisting()})
