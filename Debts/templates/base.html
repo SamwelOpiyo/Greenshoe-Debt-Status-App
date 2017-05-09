@@ -1,0 +1,70 @@
+{% load staticfiles %}
+<!doctype html>
+<html lang="en">
+  <!--This is a project done by Onyango Samwel Opiyo, Web Developer currently studing Mathematics and Computer Science at Multimedia University of Kenya.-->
+  <Head>
+  	<meta name="viewport" content="width=device-width, initial- scale=1">
+  	<meta charset="utf-8">
+    <meta name="author" content="Samwel Opiyo">
+    <meta name="keywords" content="Python-django, HTML, CSS, JavaScript, Bootstrap">
+    {% block title %}
+    {% endblock title %}
+    <link rel="stylesheet" href="{% static '/w3.css' %}">
+    <!--<link rel="stylesheet" href="{% static '/foundation/css/foundation.min.css' %}"/>-->
+    <link rel="stylesheet" href="{% static '/bootstrap/css/bootstrap.min.css' %}"/>
+    <link rel="stylesheet" href="{% static '/bootstrap/css/bootstrap-theme.min.css' %}"/>
+  </head>
+  <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50">
+      {% block head %}
+      {% endblock head %}
+  		{% block content%}
+  		{% endblock content%}
+
+
+
+      <!--<script type="text/javascript" src="{% static '/foundation/js/app.js' %}"/>
+      <script type="text/javascript" src="{% static '/foundation/js/vendor/foundation.min.js' %}"/>-->
+      <!--<script type="text/javascript" src="{% static '/foundation/js/vendor/jquery.js' %}"/>-->
+      <!--<script type="text/javascript" src="{% static '/foundation/js/vendor/what-input.js' %}"/>-->
+      <script type="text/javascript" src="{% static '/bootstrap/js/bootstrap.min.js' %}"/>
+      <script type="text/javascript" src="{% static '/bootstrap/js/npm.js' %}"/>
+      <script type="text/javascript" src="{% static '/jquery.min.js' %}"/>
+      <script type="text/javascript">
+/**
+                // Add scrollspy to <body>
+          $('body').scrollspy({target: ".navbar", offset: 60});
+
+          // Add smooth scrolling on all links inside the navbar
+          $("#myNavbar a").on('click', function(event) {
+
+            // Make sure this.hash has a value before overriding default behavior
+            if (this.hash !== "") {
+
+              // Prevent default anchor click behavior
+              event.preventDefault();
+
+              // Store hash
+              var hash = this.hash;
+
+              // Using jQuery's animate() method to add smooth page scroll
+              // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+              $('html, body').animate({
+                scrollTop: $(hash).offset().top
+              }, 900, function(){
+
+              // Add hash (#) to URL when done scrolling (default click behavior)
+                window.location.hash = hash;
+              });
+
+            } // End if
+
+          });**/
+
+      </script>
+
+
+
+
+
+  </body>
+</html>
