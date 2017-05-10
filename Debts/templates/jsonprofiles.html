@@ -15,15 +15,13 @@
 
 <table class="table table-bordered">
   <tr>
-    <th><center>ID</center></th>
-    <th><center>Customer Mobile Number</center></th>
-    <th><center>Customer Id</center></th>
-    <th><center>Customer Name</center></th>
-    <th><center>Customer Account No</center></th>
-    <th><center>Loan Amount</center></th>
-    <th><center>Loan Issue Date</center></th>
-    <th><center>Loan Balance</center></th>
-    <th><center>Loan Due Date</center></th>
+    <th><center>Id</center></th>
+    <th><center>National Id</center></th>
+    <th><center>Mobile Number</center></th>
+    <th><center>Fully Cleared</center></th>
+    <th><center>Date Cleared</center></th>
+    <th><center>Clearing Mpesa Transaction Id</center></th>
+    <th><center>Batch Numbers</center></th>
   </tr>
 
 
@@ -36,17 +34,30 @@
 
     <tr>
       <td><center>{{ profile.0.id }}</center></td>
-      <td><center>{{ profile.0.cust_mobile_number }}</center></td>
-      <td><center>{{ profile.0.cust_id }}</center></td>
-      <td><center>{{ profile.0.cust_name }}</center></td>
-      <td><center>{{ profile.0.cust_acno }}</center></td>
-      <td><center>{{ profile.0.loan_amount }}</center></td>
-      <td><center>{{ profile.0.loan_issue_date }}</center></td>
-      <td><center>{{ profile.0.loan_balance }}</center></td>
-      <td><center>{{ profile.0.loan_due_date }}</center></td>
+      <td><center>{{ profile.0.national_id }}</center></td>
+      <td><center>{{ profile.0.mobile_number }}</center></td>
+      <td><center>{{ profile.0.fully_cleared }}</center></td>
+      <td><center>{{ profile.0.date_cleared }}</center></td>
+      <td><center>{{ profile.0.clearing_mpesa_trans_id }}</center></td>
+      <td><center>{{ profile.0.batch_numbers }}</center></td>
     </tr>
 
     {% endfor %}
+    <div class="pagination">
+    <span class="step-links">
+        {% if profiles.has_previous %}
+            <a href="?page={{ profiles.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ profiles.number }} of {{ profiles.paginator.num_pages }}.
+        </span>
+
+        {% if profiles.has_next %}
+            <a href="?page={{ profiles.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+	</div>
     
     
 
