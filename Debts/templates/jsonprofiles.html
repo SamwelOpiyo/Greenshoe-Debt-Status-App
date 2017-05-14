@@ -9,11 +9,18 @@
 {% block content1 %}
 <div class="container">
 
-
 <br/><br/><hr/>
 
-
-<table class="table table-bordered">
+<div class="input-group col-xs-4">
+    <input type="search" class="light-table-filter form-control" data-table="order-table" placeholder="Filter"><br>
+    <div class="input-group-btn">
+      <button class="btn btn-default" type="submit">
+        <i class="glyphicon glyphicon-search"></i>
+      </button>
+    </div>
+ </div>
+<p style="color:brown;">Filter for this page only!</p>
+<table class="table table-bordered order-table table">
   <tr>
     <th><center>Id</center></th>
     <th><center>National Id</center></th>
@@ -75,5 +82,46 @@
 
 
 </div>
+<script type="text/javascript" >
+(function(document) {
+	'use strict';
+
+	var LightTableFilter = (function(Arr) {
+
+		var _input;
+
+		function _onInputEvent(e) {
+			_input = e.target;
+			var tables = document.getElementsByClassName(_input.getAttribute('data-table'));
+			Arr.forEach.call(tables, function(table) {
+				Arr.forEach.call(table.tBodies, function(tbody) {
+					Arr.forEach.call(tbody.rows, _filter);
+				});
+			});
+		}
+
+		function _filter(row) {
+			var text = row.textContent.toLowerCase(), val = _input.value.toLowerCase();
+			row.style.display = text.indexOf(val) === -1 ? 'none' : 'table-row';
+		}
+
+		return {
+			init: function() {
+				var inputs = document.getElementsByClassName('light-table-filter');
+				Arr.forEach.call(inputs, function(input) {
+					input.oninput = _onInputEvent;
+				});
+			}
+		};
+	})(Array.prototype);
+
+	document.addEventListener('readystatechange', function() {
+		if (document.readyState === 'complete') {
+			LightTableFilter.init();
+		}
+	});
+
+})(document);
+</script>
 
 {% endblock content1 %}

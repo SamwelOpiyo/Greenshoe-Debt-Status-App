@@ -68,7 +68,7 @@ def extract_profiles():
 def profiles(request):
     extract_profiles()
     global list_tbl_profiles
-    paginator = Paginator(list_tbl_profiles, 25) # Show 25 contacts per page
+    paginator = Paginator(list_tbl_profiles, 100) # Show 25 contacts per page
     page = request.GET.get('page')
     try:
         list_tbl_profiles = paginator.page(page)
@@ -85,7 +85,7 @@ def profiles(request):
 def duelisting(request):
     extract_duelisting()
     global list_tbl_due_listing
-    paginator = Paginator(list_tbl_due_listing, 25) # Show 25 contacts per page
+    paginator = Paginator(list_tbl_due_listing, 100) # Show 25 contacts per page
     page = request.GET.get('page')
     try:
         list_tbl_due_listing = paginator.page(page)
