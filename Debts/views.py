@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render,render_to_response
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 
@@ -64,24 +66,25 @@ def extract_profiles():
     
 
 
-    
+@login_required  
 def profiles(request):
     extract_profiles()
     global list_tbl_profiles
     paginator = Paginator(list_tbl_profiles, 100) # Show 25 contacts per page
     page = request.GET.get('page')
     try:
-        list_tbl_profiles = paginator.page(page)
+        list_tbl_profiles_new = paginator.page(page)
     except  PageNotAnInteger:
         # If page is not an integer, deliver first page.
-        list_tbl_profiles = paginator.page(1)
+        list_tbl_profiles_new = paginator.page(1)
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
-        list_tbl_profiles = paginator.page(paginator.num_pages)
+        list_tbl_profiles_new = paginator.page(paginator.num_pages)
     except:
-        list_tbl_profiles = paginator.page(1)
-    return render(request, 'jsonprofiles.html', {'profiles': list_tbl_profiles})
+        list_tbl_profiles_new = paginator.page(1)
+    return render(request, 'jsonprofiles.html', {'profiles': list_tbl_profiles_new})
 
+@login_required
 def duelisting(request):
     extract_duelisting()
     global list_tbl_due_listing
@@ -104,3 +107,24 @@ def all(request):
     global dict_data
     return HttpResponse((dict_data,dict_data["tbl_profiles_properties"],dict_data["tbl_due_listing_properties"],dict_data["list_tbl_profiles"],dict_data["list_tbl_due_listing"],dict_data["list_database_table_properties"]))
 
+
+from django.views.decorators.csrf import csrf_exempt
+@csrf_exempt
+def search(request):
+    extract_profiles()
+    if request.POST:
+        print request.POST["search"]
+        result = []
+        for each in list_tbl_profiles:
+            if request.POST["search"] in each[1] or int(request.POST["search"]) == each[2]:
+                result.append(each)
+        return render_to_response('search.html', {'result':result })
+	#return HttpResponseRedirect("/")
+    else:
+        return render_to_response('search.html')
+
+def csv(request):
+    HttpResponse("Hello")
+
+
+          

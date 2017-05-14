@@ -124,6 +124,8 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'Greenshoe.urls'
 
 SITE_ID = 1
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/debts/search'
 
 
 AUTHENTICATION_BACKENDS = [
