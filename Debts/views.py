@@ -40,63 +40,67 @@ def extract():
 
     myConnection.close()
 
+
 def extract_duelisting():
+    global list_tbl_due_listing
     import psycopg2
     myConnection = psycopg2.connect(port="6773",host="51.140.33.76", user="dev001", password="EV5gy2pQPDhC4H&fg3$5qzWL*9P4=D2K8ta9x&Qr2", dbname="testdb")
     cur = myConnection.cursor()
-    cur.execute("select row_to_json(tbl_due_listing) from tbl_due_listing;")
-
-    global g
-    g=cur.fetchall()
-    return g
+    cur.execute( "SELECT * FROM tbl_due_listing;")
+    list_tbl_due_listing = cur.fetchall()
+    myConnection.close()
+    return list_tbl_due_listing
+    
 
 def extract_profiles():
+    global list_tbl_profiles
     import psycopg2
     myConnection = psycopg2.connect(port="6773",host="51.140.33.76", user="dev001", password="EV5gy2pQPDhC4H&fg3$5qzWL*9P4=D2K8ta9x&Qr2", dbname="testdb")
     cur = myConnection.cursor()
-    cur.execute("select row_to_json(tbl_profiles) from tbl_profiles;")
-    global f
-    f=cur.fetchall()
-    return f
+    cur.execute( "SELECT * FROM tbl_profiles;")
+    list_tbl_profiles = cur.fetchall()
+    myConnection.close()
+    return list_tbl_profiles
+    
 
 
-import json
-def all(request):
-    extract()
-    return HttpResponse(dict_data.values())
     
 def profiles(request):
-    #return HttpResponse(json.dumps(extract_profiles()))
     extract_profiles()
-    global f
-    paginator = Paginator(f, 25) # Show 25 contacts per page
+    global list_tbl_profiles
+    paginator = Paginator(list_tbl_profiles, 25) # Show 25 contacts per page
     page = request.GET.get('page')
     try:
-        f = paginator.page(page)
+        list_tbl_profiles = paginator.page(page)
     except  PageNotAnInteger:
         # If page is not an integer, deliver first page.
-        f = paginator.page(1)
+        list_tbl_profiles = paginator.page(1)
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
-        f = paginator.page(paginator.num_pages)
+        list_tbl_profiles = paginator.page(paginator.num_pages)
     except:
-        f = paginator.page(1)
-    return render(request, 'jsonprofiles.html', {'profiles':f})
+        list_tbl_profiles = paginator.page(1)
+    return render(request, 'jsonprofiles.html', {'profiles': list_tbl_profiles})
 
 def duelisting(request):
-    #return HttpResponse(json.dumps(extract_duelisting()))
     extract_duelisting()
-    global g
-    paginator = Paginator(g, 25) # Show 25 contacts per page
+    global list_tbl_due_listing
+    paginator = Paginator(list_tbl_due_listing, 25) # Show 25 contacts per page
     page = request.GET.get('page')
     try:
-        g = paginator.page(page)
+        list_tbl_due_listing = paginator.page(page)
     except  PageNotAnInteger:
         # If page is not an integer, deliver first page.
-        g = paginator.page(1)
+        list_tbl_due_listing = paginator.page(1)
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
-        g = paginator.page(paginator.num_pages)
+        list_tbl_due_listing = paginator.page(paginator.num_pages)
     except:
-        g = paginator.page(1)
-    return render(request, 'jsonduelisting.html', {'dues':g})
+        list_tbl_due_listing = paginator.page(1)
+    return render(request, 'jsonduelisting.html', {'dues':list_tbl_due_listing})
+
+def all(request):
+    extract()
+    global dict_data
+    return HttpResponse((dict_data,dict_data["tbl_profiles_properties"],dict_data["tbl_due_listing_properties"],dict_data["list_tbl_profiles"],dict_data["list_tbl_due_listing"],dict_data["list_database_table_properties"]))
+
