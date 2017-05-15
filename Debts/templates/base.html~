@@ -8,8 +8,6 @@
     <meta name="author" content="root" >
     <meta name="keywords" content="Python-django, HTML, CSS, JavaScript, Bootstrap">
     {% block title %}
-    {% block title1 %}
-    {% endblock title1 %}
     {% endblock title %}
     <link rel="stylesheet" href="{% static '/bootstrap/css/bootstrap.min.css' %}"/>
     <link rel="stylesheet" href="{% static '/bootstrap/css/bootstrap-theme.min.css' %}"/>
@@ -17,12 +15,22 @@
   <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50">
       {% block head %}
       {% endblock head %}
+      
+      {% if messages %}
+
+      	<strong>Messages:</strong>
+      	<ul>
+				{% for message in messages %}
+					<li>{{message}}</li>
+				{% endfor %}
+      	</ul>
+
+    	{% endif %}
+    	
   		{% block content%}
-  		{% block content1 %}
-  		{% endblock content1 %}
   		{% endblock content%}
 
-
+		
 
       
       <script type="text/javascript" src="{% static '/bootstrap/js/bootstrap.min.js' %}"/>

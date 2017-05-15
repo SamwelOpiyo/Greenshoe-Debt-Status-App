@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render,render_to_response
+from django.shortcuts import render
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -124,32 +124,41 @@ def search(request):
         return render_to_response('search.html', {'result':result })
 	#return HttpResponseRedirect("/")
     else:
-        return render_to_response('search.html')
+        return render(request,'search.html')
 
 
 import csv
-def csv(request):
+def csv_view(request):
+    import StringIO
     extract_profiles()
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="Customer_debt_information.csv"'
 
-    writers = csv.writer(response)
-    writers.writerow(['Id', 'National Id', 'Mobile Number', 'Fully Cleared', 'Date Cleared', 'Clearing Mpesa Transaction Id', 'Batch Numbers'])
+    f = StringIO.StringIO()
+    writer = csv.writer(f)
+    #writers = csv.writer(response)
+    writer.writerow(['Id', 'National Id', 'Mobile Number', 'Fully Cleared', 'Date Cleared', 'Clearing Mpesa Transaction Id', 'Batch Numbers'])
     for each in list_tbl_profiles:
         writer.writerow([each[0], each[1], each[2], each[3], each[4], each[5], each[6]])
-
+    
+    f.seek(0)
+    response = HttpResponse(f, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="Customer_debt_information.csv"'
     return response
+    
 
 def listing_csv(request):
+    import StringIO
     extract_duelisting()
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="Listings.csv"'
 
-    writers = csv.writer(response)
-    writers.writerow(['Id', 'Customer Mobile Number', 'Customer Id', 'Customer Name', 'Customer Account No', 'Loan Amount', 'Loan Issue Date', 'Loan Balance','Loan Due Date'])
-    for each in list_tbl_profiles:
+    f = StringIO.StringIO()
+    writer = csv.writer(f)
+ 
+    writer.writerow(['Id', 'Customer Mobile Number', 'Customer Id', 'Customer Name', 'Customer Account No', 'Loan Amount', 'Loan Issue Date', 'Loan Balance','Loan Due Date'])
+    for each in list_tbl_due_listing:
         writer.writerow([each[0], each[8], each[2], each[1], each[3], each[4], each[6], each[5], each[7]])
 
+    f.seek(0)
+    response = HttpResponse(f, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="Listings.csv"'
     return response
 
 

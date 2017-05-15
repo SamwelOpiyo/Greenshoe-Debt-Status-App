@@ -18,8 +18,11 @@
         <i class="glyphicon glyphicon-search"></i>
       </button>
     </div>
- </div>
-<p style="color:brown;">Filter for this page only!</p>
+</div> 
+ 
+<p style="color:brown;" class="text-left">Filters for this page only!</p>
+    
+ 
 <table class="table table-bordered order-table table">
   <tr>
     <th><center>Id</center></th>
@@ -64,7 +67,12 @@
             <a href="?page={{ profiles.next_page_number }}">next</a>
         {% endif %}
     </span>
+    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+    <a href="{% url 'csv_view' %}" class="btn btn-default text-right">Download Profiles in CSV Format</a>
 	</div>
+	
     
     
 

@@ -25,5 +25,5 @@ urlpatterns = [
     url(r'^logout/$', RedirectView.as_view(url='/accounts/logout/'), name="logout"),
     url(r'^login/$', RedirectView.as_view(url='/accounts/login/')),
     url(r'^signup/$', RedirectView.as_view(url='/accounts/signup/')),
-    url(r'^help/$', TemplateView.as_view(template_name='help.html'), name='help'),
+    url(r'^help/$', TemplateView.as_view(template_name="help.html"), name='help'),
 ]

@@ -1,0 +1,174 @@
+
+Linux
+
+Create a virtual environment using command "mkvirtualenv greenshoe" if you are using virtualenvwrapper
+Move into www directory using command "cd /var/www"
+Clone the project's repository using command "git clone https://github.com/SamwelOpiyo/Greenshoe-Debt-Status-App.git"
+Install all the requirements using command "pip install -r requirements.txt"
+Move into the project's root directory using command "cd Greenshoe-Debt-Status-App.git"
+Do a basic test to ensure gunicorn serves your application using command "gunicorn Greenshoe.wsgi:application –bind 0.0.0.0:8000"
+Navigating to http://127.0.0.1:8000 should display the login page.
+Close gunicorn by using command "ctrl+c"
+Create a shell script, which we’ll save at the project's root directory as gunicorn.sh by using command "vi gunicorn.sh"
+Change to insert mode by pressing the "i" key
+Add the following lines of text into the file
+
+"
+    #!/bin/bash
+    NAME=”greenshoe” # Name of the application
+    DJANGODIR=/var/www/Greenshoe-Debt-Status-App # Django project directory
+    SOCKFILE=/var/www/Greenshoe-Debt-Status-App/gunicorn.sock # we will communicte using this unix socket
+
+    USER=www-data # the user to run as
+    GROUP=www-data # the group to run as
+    NUM_WORKERS=3 # how many worker processes should Gunicorn spawn
+
+    MAX_REQUESTS=1 # reload the application server for each request
+    DJANGO_SETTINGS_MODULE=Greenshoe.settings # which settings file should Django use
+    DJANGO_WSGI_MODULE=Greenshoe.wsgi # WSGI module name
+
+    echo “Starting $NAME as `whoami`”
+
+    # Activate the virtual environment
+    cd $DJANGODIR
+    source ~/.virtualenvs/greenshoe/bin/activate
+
+    export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
+    export PYTHONPATH=$DJANGODIR:$PYTHONPATH
+
+    # Create the run directory if it doesn’t exist
+    RUNDIR=$(dirname $SOCKFILE)
+    test -d $RUNDIR || mkdir -p $RUNDIR
+
+    # Start your Django Unicorn
+
+    # Programs meant to be run under supervisor should not daemonize themselves (do not use –daemon)
+    exec ~/.virtualenvs/greenshoe/bin/gunicorn ${DJANGO_WSGI_MODULE}:application \
+    --name $NAME \
+    --workers $NUM_WORKERS \
+    --max-requests $MAX_REQUESTS \
+    --user=$USER --group=$GROUP \
+    --bind=0.0.0.0:3000 \
+    --log-level=error \
+    --log-file=-
+"
+
+
+Exit the insert mode in vi by pressing "esc" key
+Exit vi by pressing "shift+z+z"
+Make this script executable using command "sudo chmod u+x gunicorn.sh"
+You can test this script (make sure you run it as the user specified in USER) using command "./gunicorn.sh"
+As before, navigating to http://127.0.0.1:3000 will load the same page as the previous test.
+Install Supervisor using command "sudo apt-get install supervisor" if the operating system is debian based
+After installing supervisor, we need to tell it the programs to watch and start by creating configuration files in /etc/supervisor/conf.d.  We’ll create ours as /etc/supervisor/conf.d/greenshoe.conf
+
+
+"
+	[program:greenshoe]
+	command = /var/www/Greenshoe-Debt-Status-App/gunicorn.sh ; Command to start app
+	user = www-data; User to run as
+	stdout_logfile = /var/www/Greenshoe-Debt-Status-App/logs/supervisor.log ; Where to write log messages
+	redirect_stderr = true ; Save stderr in the same log
+	environment=LANG=en_US.UTF-8,LC_ALL=en_US.UTF-8 ; Set UTF-8 as default encoding
+
+"
+
+Note that we specified a directory within the project’s folder where we’ll store supervisor logs for our app.  It doesn’t exist, so it needs to be created using command "mkdir /var/www/Greenshoe-Debt-Status-App/logs/"
+
+After saving the configuration file, we’ll then have supervisor reread configuration files and update (subsequently starting the newly registered app).
+"sudo supervisorctl reread" then "sudo supervisorctl update" returning "greenshoe: available" and "greenshoe: added process group" respectively if successful.
+
+Install and start nginx server using commands "sudo apt-get install nginx" and "sudo service nginx restart" repectively.
+
+We’ll now proceed to create an Nginx virtual server configuration for our app.  This will be under /etc/nginx/sites-available/greenshoe ie "vi /etc/nginx/sites-available/greenshoe"
+
+
+"
+    upstream app_server {
+    # fail_timeout=0 means we always retry an upstream even if it failed
+    # to return a good HTTP response (in case the Unicorn master nukes a
+    # single worker for timing out).
+    server unix:/var/www/Greenshoe-Debt-Status-App/gunicorn.sock fail_timeout=0;
+    }
+
+    server {
+    listen 80;
+    server_name 0.0.0.0;
+    client_max_body_size 4G;
+    access_log /var/www/Greenshoe-Debt-Status-App/logs/nginx-access.log;
+    error_log /var/www/Greenshoe-Debt-Status-App/logs/nginx-error.log;
+    location /static/ {
+    alias /var/www/Greenshoe-Debt-Status-App/CollectedStatic/;
+    }
+
+    location /media/ {
+    alias /var/www/Greenshoe-Debt-Status-App/CollectedMedia/;
+    }
+
+    location /greenshoe/ {
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_redirect off;
+    # Try to serve static files from nginx, no point in making an
+    # *application* server like Unicorn/Rainbows! serve static files.
+    if (!-f $request_filename) {
+    proxy_pass http://app_server;
+    break;
+    }
+    }
+    }
+
+"
+
+Create the symbolic link to the sites-enabled folder using command "sudo ln -s /etc/nginx/sites-available/greenshoe /etc/nginx/sites-enabled/greenshoe"
+
+Restart nginx "sudo service nginx restart"
+
+when you navigate to "<your ip address>/greenshoe" the same page as the previous ones will be displayed.
+
+If it shows an error the logs in "/var/www/Greenshoe-Debt-Status-App/logs/nginx-access.log" file are very instrumental in debugging the issue.
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Heroku
+
+Create an account on heroku and login. Navigate to the dashboard "https://dashboard.heroku.com/apps".
+
+Click on "new" button found on the top right part of the page and choose "Create new app".
+
+Choose an app name(optional) and runtime selection and then click on "Create App".
+
+In the "Deploy" tab "Deployment method" choose "Github(Connect to Github)"
+
+Click "Connect to Github" and login using your account.
+
+
+
+
+
+
+
+
+
+
+
+

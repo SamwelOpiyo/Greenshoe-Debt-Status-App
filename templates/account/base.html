@@ -20,17 +20,24 @@
 
     {% block body %}
 
-    {% if messages %}
+    
+		{% if messages %}
 
-      <strong>Messages:</strong>
-      <ul>
-	{% for message in messages %}
-	<li>{{message}}</li>
-	{% endfor %}
-      </ul>
+			<div class="alert alert-info alert-dismissable">
+  					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>      	
+      			<strong>Messages:</strong>
+      			
+      				{% for message in messages %}
+							{{message}}
+						{% endfor %}
+					
+      		
+  					
+			</div>
+				
+      	
 
-    {% endif %}
-
+    	{% endif %}
 
       
 

@@ -20,7 +20,9 @@
       </button>
     </div>
  </div>
-<p style="color:brown;">Filter for this page only!</p>
+        
+ 
+<p style="color:brown;">Filters for this page only!</p>
 <table class="table table-bordered order-table table">
   <tr>
     <th><center>ID</center></th>
@@ -67,8 +69,9 @@
 
         {% if dues.has_next %}
             <a href="?page={{ dues.next_page_number }}">next</a>
-        {% endif %}
+        {% endif %}        
     </span>
+    <a href="{% url 'listing_csv' %}" class="btn btn-default">Download Listings in CSV Format</a>
 	 </div>
     
 
