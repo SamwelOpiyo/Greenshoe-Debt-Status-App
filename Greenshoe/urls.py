@@ -34,4 +34,5 @@ from django.views import static
 if settings.DEBUG :
     urlpatterns += [
         url(r'^media/(?P<path>.*)$', static.serve, {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
+	url(r'^static/(?P<path>.*)$', static.serve, {'document_root': settings.STATIC_ROOT, 'show_indexes': True}),
     ]
