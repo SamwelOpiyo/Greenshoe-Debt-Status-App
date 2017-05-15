@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render,render_to_response
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 
 # Create your views here.
@@ -66,7 +66,8 @@ def extract_profiles():
     
 
 
-@login_required  
+@user_passes_test(lambda u: u.is_staff, login_url='/debts/search/') 
+#@user_passes_test(lambda u: u.groups.filter(name='role1').count() == 0,login_url='/debts/search/')
 def profiles(request):
     extract_profiles()
     global list_tbl_profiles
@@ -84,7 +85,8 @@ def profiles(request):
         list_tbl_profiles_new = paginator.page(1)
     return render(request, 'jsonprofiles.html', {'profiles': list_tbl_profiles_new})
 
-@login_required
+@user_passes_test(lambda u: u.is_staff, login_url='/debts/search/')
+#@user_passes_test(lambda u: u.groups.filter(name='role1').count() == 0,login_url='/debts/search/')
 def duelisting(request):
     extract_duelisting()
     global list_tbl_due_listing
@@ -110,6 +112,7 @@ def all(request):
 
 from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
+@login_required  
 def search(request):
     extract_profiles()
     if request.POST:
@@ -123,8 +126,33 @@ def search(request):
     else:
         return render_to_response('search.html')
 
+
+import csv
 def csv(request):
-    HttpResponse("Hello")
+    extract_profiles()
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="Customer_debt_information.csv"'
+
+    writers = csv.writer(response)
+    writers.writerow(['Id', 'National Id', 'Mobile Number', 'Fully Cleared', 'Date Cleared', 'Clearing Mpesa Transaction Id', 'Batch Numbers'])
+    for each in list_tbl_profiles:
+        writer.writerow([each[0], each[1], each[2], each[3], each[4], each[5], each[6]])
+
+    return response
+
+def listing_csv(request):
+    extract_duelisting()
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="Listings.csv"'
+
+    writers = csv.writer(response)
+    writers.writerow(['Id', 'Customer Mobile Number', 'Customer Id', 'Customer Name', 'Customer Account No', 'Loan Amount', 'Loan Issue Date', 'Loan Balance','Loan Due Date'])
+    for each in list_tbl_profiles:
+        writer.writerow([each[0], each[8], each[2], each[1], each[3], each[4], each[6], each[5], each[7]])
+
+    return response
+
+
 
 
           

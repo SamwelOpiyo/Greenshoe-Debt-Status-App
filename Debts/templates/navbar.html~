@@ -28,7 +28,6 @@
         <li class="active"><a href="{% url "search" %}">Search</a></li>
         <li><a href="{% url "profiles" %}">Profiles</a></li>
         <li><a href="{% url "duelisting" %}">Listings</a></li>
-        <li><a href="{% url "help" %}">Help</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
        {% if user.is_authenticated %}
@@ -38,9 +37,7 @@
               #user{color: white;}
             </style>
           <li><a href="{% url 'account_logout' %}"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
-         {% else %}
-          <li><a href="{% url 'account_signup' %}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-          <li><a href="{% url 'account_login' %}" ><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+         
          {% endif %}
         {% else %}
           <li><a href="{% url 'account_signup' %}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>

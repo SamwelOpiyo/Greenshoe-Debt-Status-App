@@ -1,0 +1,36 @@
+{% extends "navbar.html" %}
+{% load staticfiles %}
+{% block title1 %}
+  <meta name="description" content="">
+  <title></title>
+
+
+{% endblock title1 %}
+{% block content1 %}
+<div class="container">
+
+
+<h1 class="text-center">Help</h1><hr/>
+
+<p class="text-center">If you click on Profiles or Listings and they keep on redirecting to search page, this means that you don't have the permisions for accessing the mentioned pages. Please write an email to <a href="mailto:samonyango20@gmail.com?Subject=Greenshoe%Interview%Permissions" target="_top">samonyango20@gmail.com</a> to be given the required permissions.</p><br>
+<p class="text-center"> Having trouble loging out! Click on <a href="{% url "logout" %}">logout</a> to sign out.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock content1 %}
+
