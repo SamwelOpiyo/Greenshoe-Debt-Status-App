@@ -70,7 +70,7 @@ Add the following lines of text into the file
     --workers $NUM_WORKERS \
     --max-requests $MAX_REQUESTS \
     --user=$USER --group=$GROUP \
-    --bind=0.0.0.0:3000 \
+    --bind=unix:$SOCKFILE \
     --log-level=error \
     --log-file=-
 "
@@ -193,9 +193,31 @@ In the "Deploy" tab "Deployment method" section choose "Github(Connect to Github
 
 Click "Connect to Github" and login using your account.
 
+Input "Greenshoe-Debt-Status-App" in search input and click search button. Choose the appropriate (forked) repository.
+
 In "Automatic Deploys" section Click "Enable Automatic Deploys" to enable automatic deployment after every push.
 
 In "Manual Deploy" section Click "Deploy Branch" to deploy app.
+
+After successful Deployment click "view" to open the app.
+
+
+
+
+
+
+Sample Heroku App
+
+
+https://green-shoe-sam.herokuapp.com/
+
+role1
+Username:Sam
+Password:qwerty12345
+
+role2
+Username:Samwel
+Password:greenshoe
 
 
 
