@@ -121,7 +121,7 @@ def search(request):
         for each in list_tbl_profiles:
             if request.POST["search"] in each[1] or int(request.POST["search"]) == each[2]:
                 result.append(each)
-        return render_to_response('search.html', {'result':result })
+        return render(request,'search.html', {'result':result })
 	#return HttpResponseRedirect("/")
     else:
         return render(request,'search.html')
