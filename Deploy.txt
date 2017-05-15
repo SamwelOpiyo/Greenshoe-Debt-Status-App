@@ -1,16 +1,38 @@
 
 Linux
 
-Create a virtual environment using command "mkvirtualenv greenshoe" if you are using virtualenvwrapper
+Set up virtualenvwrapper using the following commands:
+
+"
+	pip install virtualenvwrapper
+	export WORKON_HOME=~/Envs
+	mkdir -p $WORKON_HOME
+	source /usr/local/bin/virtualenvwrapper.sh
+
+" as per http://virtualenvwrapper.readthedocs.io/en/latest/ 
+
+Create a virtual environment using command "mkvirtualenv greenshoe" 
+
 Move into www directory using command "cd /var/www"
+
 Clone the project's repository using command "git clone https://github.com/SamwelOpiyo/Greenshoe-Debt-Status-App.git"
+
+Move into the project's root directory using command "cd Greenshoe-Debt-Status-App"
+
 Install all the requirements using command "pip install -r requirements.txt"
-Move into the project's root directory using command "cd Greenshoe-Debt-Status-App.git"
+
+Collect static using command "python manage.py collectstatic"
+
 Do a basic test to ensure gunicorn serves your application using command "gunicorn Greenshoe.wsgi:application –bind 0.0.0.0:8000"
+
 Navigating to http://127.0.0.1:8000 should display the login page.
+
 Close gunicorn by using command "ctrl+c"
+
 Create a shell script, which we’ll save at the project's root directory as gunicorn.sh by using command "vi gunicorn.sh"
+
 Change to insert mode by pressing the "i" key
+
 Add the following lines of text into the file
 
 "
@@ -19,8 +41,8 @@ Add the following lines of text into the file
     DJANGODIR=/var/www/Greenshoe-Debt-Status-App # Django project directory
     SOCKFILE=/var/www/Greenshoe-Debt-Status-App/gunicorn.sock # we will communicte using this unix socket
 
-    USER=www-data # the user to run as
-    GROUP=www-data # the group to run as
+    USER=root # the user to run as eg root, www-data
+    GROUP=root # the group to run as eg root, www-data
     NUM_WORKERS=3 # how many worker processes should Gunicorn spawn
 
     MAX_REQUESTS=1 # reload the application server for each request
@@ -55,11 +77,18 @@ Add the following lines of text into the file
 
 
 Exit the insert mode in vi by pressing "esc" key
+
 Exit vi by pressing "shift+z+z"
+
 Make this script executable using command "sudo chmod u+x gunicorn.sh"
+
 You can test this script (make sure you run it as the user specified in USER) using command "./gunicorn.sh"
+
 As before, navigating to http://127.0.0.1:3000 will load the same page as the previous test.
+
+///
 Install Supervisor using command "sudo apt-get install supervisor" if the operating system is debian based
+
 After installing supervisor, we need to tell it the programs to watch and start by creating configuration files in /etc/supervisor/conf.d.  We’ll create ours as /etc/supervisor/conf.d/greenshoe.conf
 
 
@@ -77,6 +106,7 @@ Note that we specified a directory within the project’s folder where we’ll s
 
 After saving the configuration file, we’ll then have supervisor reread configuration files and update (subsequently starting the newly registered app).
 "sudo supervisorctl reread" then "sudo supervisorctl update" returning "greenshoe: available" and "greenshoe: added process group" respectively if successful.
+///
 
 Install and start nginx server using commands "sudo apt-get install nginx" and "sudo service nginx restart" repectively.
 
@@ -151,15 +181,23 @@ If it shows an error the logs in "/var/www/Greenshoe-Debt-Status-App/logs/nginx-
 
 Heroku
 
+Login to Github and Fork https://github.com/SamwelOpiyo/Greenshoe-Debt-Status-App.git 
+
 Create an account on heroku and login. Navigate to the dashboard "https://dashboard.heroku.com/apps".
 
 Click on "new" button found on the top right part of the page and choose "Create new app".
 
 Choose an app name(optional) and runtime selection and then click on "Create App".
 
-In the "Deploy" tab "Deployment method" choose "Github(Connect to Github)"
+In the "Deploy" tab "Deployment method" section choose "Github(Connect to Github)"
 
 Click "Connect to Github" and login using your account.
+
+In "Automatic Deploys" section Click "Enable Automatic Deploys" to enable automatic deployment after every push.
+
+In "Manual Deploy" section Click "Deploy Branch" to deploy app.
+
+
 
 
 

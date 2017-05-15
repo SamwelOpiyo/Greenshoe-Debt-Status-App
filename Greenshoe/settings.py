@@ -25,7 +25,7 @@ SECRET_KEY = 'gvvqh#=ikuz%#eadmn@exjp$d@u+!0(micky!r-&cq9^48&c61'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.example.com','.samwelopiyo.guru','127.0.0.1']
+ALLOWED_HOSTS = ['.example.com','.samwelopiyo.guru','127.0.0.1','green-shoe-sam.herokuapp.com']
 
 
 # Application definition
