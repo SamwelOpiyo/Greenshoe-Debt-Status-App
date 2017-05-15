@@ -86,7 +86,7 @@ You can test this script (make sure you run it as the user specified in USER) us
 
 As before, navigating to http://127.0.0.1:3000 will load the same page as the previous test.
 
-///
+
 Install Supervisor using command "sudo apt-get install supervisor" if the operating system is debian based
 
 After installing supervisor, we need to tell it the programs to watch and start by creating configuration files in /etc/supervisor/conf.d.  We’ll create ours as /etc/supervisor/conf.d/greenshoe.conf
@@ -106,7 +106,7 @@ Note that we specified a directory within the project’s folder where we’ll s
 
 After saving the configuration file, we’ll then have supervisor reread configuration files and update (subsequently starting the newly registered app).
 "sudo supervisorctl reread" then "sudo supervisorctl update" returning "greenshoe: available" and "greenshoe: added process group" respectively if successful.
-///
+
 
 Install and start nginx server using commands "sudo apt-get install nginx" and "sudo service nginx restart" repectively.
 
